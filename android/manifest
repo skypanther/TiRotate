@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 0.1.0
+apiversion: 3
+architectures: armeabi-v7a x86
+description: TiRotate is an Android Image rotation module
+author: Tim Poulsen
+license: MIT
+copyright: Copyright (c) 2017 by Tim Poulsen, Skypanther Studios
+
+# these should not be edited
+name: TiRotate
+moduleid: com.skypanther.tirotate
+guid: 6dccb7ce-38e3-4579-9308-eee0ae2b90fd
+platform: android
+minsdk: 6.0.1.GA

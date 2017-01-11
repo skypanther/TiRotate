@@ -1,0 +1,16 @@
+%define lookup-function-name lookupGeneratedInit
+%define class-name TiRotateBindings
+%{
+
+#include <string.h>
+#include <v8.h>
+#include <KrollBindings.h>
+
+#include "com.skypanther.tirotate.TiRotateModule.h"
+
+
+%}
+struct titanium::bindings::BindEntry;
+%%
+com.skypanther.tirotate.TiRotateModule, ::com::skypanther::tirotate::TiRotateModule::bindProxy, ::com::skypanther::tirotate::TiRotateModule::dispose
+%%
