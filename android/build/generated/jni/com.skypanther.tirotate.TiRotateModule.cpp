@@ -85,8 +85,8 @@ Local<FunctionTemplate> TiRotateModule::getProxyTemplate(Isolate* isolate)
 	titanium::ProxyFactory::registerProxyPair(javaClass, *t);
 
 	// Method bindings --------------------------------------------------------
-	titanium::SetProtoMethod(isolate, t, "setExifOrientation", TiRotateModule::setExifOrientation);
 	titanium::SetProtoMethod(isolate, t, "rotate", TiRotateModule::rotate);
+	titanium::SetProtoMethod(isolate, t, "setExifOrientation", TiRotateModule::setExifOrientation);
 	titanium::SetProtoMethod(isolate, t, "getExifOrientationDegrees", TiRotateModule::getExifOrientationDegrees);
 	titanium::SetProtoMethod(isolate, t, "getExifOrientation", TiRotateModule::getExifOrientation);
 
@@ -105,17 +105,17 @@ Local<FunctionTemplate> TiRotateModule::getProxyTemplate(Isolate* isolate)
 	}
 
 
-		DEFINE_STRING_CONSTANT(isolate, prototypeTemplate, "UPSIDE_PORTRAIT", "upside_portrait");
-
 		DEFINE_INT_CONSTANT(isolate, prototypeTemplate, "ORIENTATION_NORMAL", 1);
 
-		DEFINE_STRING_CONSTANT(isolate, prototypeTemplate, "PORTRAIT", "portrait");
+		DEFINE_STRING_CONSTANT(isolate, prototypeTemplate, "UPSIDE_PORTRAIT", "upside_portrait");
 
 		DEFINE_INT_CONSTANT(isolate, prototypeTemplate, "ORIENTATION_ROTATE_90", 6);
 
-		DEFINE_INT_CONSTANT(isolate, prototypeTemplate, "DEGREES_PORTRAIT", 0);
+		DEFINE_STRING_CONSTANT(isolate, prototypeTemplate, "PORTRAIT", "portrait");
 
 		DEFINE_INT_CONSTANT(isolate, prototypeTemplate, "ORIENTATION_ROTATE_270", 8);
+
+		DEFINE_INT_CONSTANT(isolate, prototypeTemplate, "DEGREES_PORTRAIT", 0);
 
 		DEFINE_INT_CONSTANT(isolate, prototypeTemplate, "DEGREES_LANDSCAPE_LEFT", 270);
 
@@ -140,100 +140,6 @@ Local<FunctionTemplate> TiRotateModule::getProxyTemplate(Isolate* isolate)
 }
 
 // Methods --------------------------------------------------------------------
-void TiRotateModule::setExifOrientation(const FunctionCallbackInfo<Value>& args)
-{
-	LOGD(TAG, "setExifOrientation()");
-	Isolate* isolate = args.GetIsolate();
-	HandleScope scope(isolate);
-
-	JNIEnv *env = titanium::JNIScope::getEnv();
-	if (!env) {
-		titanium::JSException::GetJNIEnvironmentError(isolate);
-		return;
-	}
-	static jmethodID methodID = NULL;
-	if (!methodID) {
-		methodID = env->GetMethodID(TiRotateModule::javaClass, "setExifOrientation", "(Ljava/lang/String;Ljava/lang/Object;)V");
-		if (!methodID) {
-			const char *error = "Couldn't find proxy method 'setExifOrientation' with signature '(Ljava/lang/String;Ljava/lang/Object;)V'";
-			LOGE(TAG, error);
-				titanium::JSException::Error(isolate, error);
-				return;
-		}
-	}
-
-	Local<Object> holder = args.Holder();
-	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
-	if (!JavaObject::isJavaObject(holder)) {
-		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
-	}
-
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(holder);
-
-	if (args.Length() < 2) {
-		char errorStringBuffer[100];
-		sprintf(errorStringBuffer, "setExifOrientation: Invalid number of arguments. Expected 2 but got %d", args.Length());
-		titanium::JSException::Error(isolate, errorStringBuffer);
-		return;
-	}
-
-	jvalue jArguments[2];
-
-
-
-
-	
-
-	if (!args[0]->IsNull()) {
-		Local<Value> arg_0 = args[0];
-		jArguments[0].l =
-			titanium::TypeConverter::jsValueToJavaString(
-				isolate,
-				env, arg_0);
-	} else {
-		jArguments[0].l = NULL;
-	}
-
-	bool isNew_1;
-
-	if (!args[1]->IsNull()) {
-		Local<Value> arg_1 = args[1];
-		jArguments[1].l =
-			titanium::TypeConverter::jsValueToJavaObject(
-				isolate,
-				env, arg_1, &isNew_1);
-	} else {
-		jArguments[1].l = NULL;
-	}
-
-	jobject javaProxy = proxy->getJavaObject();
-	env->CallVoidMethodA(javaProxy, methodID, jArguments);
-
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
-
-
-
-				env->DeleteLocalRef(jArguments[0].l);
-
-
-			if (isNew_1) {
-				env->DeleteLocalRef(jArguments[1].l);
-			}
-
-
-	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException(isolate);
-		env->ExceptionClear();
-	}
-
-
-
-
-	args.GetReturnValue().Set(v8::Undefined(isolate));
-
-}
 void TiRotateModule::rotate(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "rotate()");
@@ -334,6 +240,100 @@ void TiRotateModule::rotate(const FunctionCallbackInfo<Value>& args)
 
 
 	args.GetReturnValue().Set(v8Result);
+
+}
+void TiRotateModule::setExifOrientation(const FunctionCallbackInfo<Value>& args)
+{
+	LOGD(TAG, "setExifOrientation()");
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
+
+	JNIEnv *env = titanium::JNIScope::getEnv();
+	if (!env) {
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
+	}
+	static jmethodID methodID = NULL;
+	if (!methodID) {
+		methodID = env->GetMethodID(TiRotateModule::javaClass, "setExifOrientation", "(Ljava/lang/String;Ljava/lang/Object;)V");
+		if (!methodID) {
+			const char *error = "Couldn't find proxy method 'setExifOrientation' with signature '(Ljava/lang/String;Ljava/lang/Object;)V'";
+			LOGE(TAG, error);
+				titanium::JSException::Error(isolate, error);
+				return;
+		}
+	}
+
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = titanium::Proxy::unwrap(holder);
+
+	if (args.Length() < 2) {
+		char errorStringBuffer[100];
+		sprintf(errorStringBuffer, "setExifOrientation: Invalid number of arguments. Expected 2 but got %d", args.Length());
+		titanium::JSException::Error(isolate, errorStringBuffer);
+		return;
+	}
+
+	jvalue jArguments[2];
+
+
+
+
+	
+
+	if (!args[0]->IsNull()) {
+		Local<Value> arg_0 = args[0];
+		jArguments[0].l =
+			titanium::TypeConverter::jsValueToJavaString(
+				isolate,
+				env, arg_0);
+	} else {
+		jArguments[0].l = NULL;
+	}
+
+	bool isNew_1;
+
+	if (!args[1]->IsNull()) {
+		Local<Value> arg_1 = args[1];
+		jArguments[1].l =
+			titanium::TypeConverter::jsValueToJavaObject(
+				isolate,
+				env, arg_1, &isNew_1);
+	} else {
+		jArguments[1].l = NULL;
+	}
+
+	jobject javaProxy = proxy->getJavaObject();
+	env->CallVoidMethodA(javaProxy, methodID, jArguments);
+
+	if (!JavaObject::useGlobalRefs) {
+		env->DeleteLocalRef(javaProxy);
+	}
+
+
+
+				env->DeleteLocalRef(jArguments[0].l);
+
+
+			if (isNew_1) {
+				env->DeleteLocalRef(jArguments[1].l);
+			}
+
+
+	if (env->ExceptionCheck()) {
+		titanium::JSException::fromJavaException(isolate);
+		env->ExceptionClear();
+	}
+
+
+
+
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
 void TiRotateModule::getExifOrientationDegrees(const FunctionCallbackInfo<Value>& args)

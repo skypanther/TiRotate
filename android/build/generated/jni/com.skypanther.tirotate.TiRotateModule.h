@@ -30,8 +30,8 @@ private:
 	static v8::Persistent<v8::FunctionTemplate> proxyTemplate;
 
 	// Methods -----------------------------------------------------------
-	static void setExifOrientation(const v8::FunctionCallbackInfo<v8::Value>&);
 	static void rotate(const v8::FunctionCallbackInfo<v8::Value>&);
+	static void setExifOrientation(const v8::FunctionCallbackInfo<v8::Value>&);
 	static void getExifOrientationDegrees(const v8::FunctionCallbackInfo<v8::Value>&);
 	static void getExifOrientation(const v8::FunctionCallbackInfo<v8::Value>&);
 
