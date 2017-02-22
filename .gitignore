@@ -1,3 +1,5 @@
+.DS_Store
 .settings
 .apt_generated
-build
+build/
+libs/
