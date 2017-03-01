@@ -4,7 +4,7 @@
 #
 version: 0.0.9
 apiversion: 2
-architectures: armeabi-v7a x86
+architectures: armeabi;armeabi-v7a;x86;x86_64
 description: TiRotate is an Android Image rotation module
 author: Tim Poulsen
 license: MIT
@@ -15,4 +15,4 @@ name: TiRotate
 moduleid: com.skypanther.tirotate
 guid: 6dccb7ce-38e3-4579-9308-eee0ae2b90fd
 platform: android
-minsdk: 5.0.2.GA
+minsdk: 5.5.1.GA
